@@ -6,6 +6,8 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity()
@@ -20,22 +22,32 @@ public class Post {
     @Column(nullable = false, length = 50, unique = true)
     private String title;
 
-    @Column(length = 500)
+    @Column(length = 5000, nullable = false)
     private String content;
 
     private String coverImageUrl;
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     @JoinColumn
     private Author author;
 
     @CreationTimestamp
-    private LocalDate dateCreated;
+    private LocalDateTime dateCreated;
 
     @UpdateTimestamp
-    private LocalDate dateModified;
+    private LocalDateTime dateModified;
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Comment> comments;
+
+    public void addComment(Comment... comment){
+        if(this.comments == null){
+            this.comments = new ArrayList<>();
+        }
+        for(Comment c: comment){
+            this.comments.add(c);
+        }
+    }
+
 
 }

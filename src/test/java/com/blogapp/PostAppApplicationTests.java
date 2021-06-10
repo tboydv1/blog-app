@@ -1,6 +1,7 @@
 package com.blogapp;
 
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.cfg.Environment;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -15,12 +16,21 @@ import static org.assertj.core.api.Assertions.assertThat;
 @Slf4j
 class PostAppApplicationTests {
 
+    Environment environment;
+
     @Autowired
     DataSource datasource;
 
     @Autowired
     TestDataSource testDataSource;
 
+
+    @Test
+    void readEnvironmentVariables(){
+
+        String value = System.getProperty("JAVA_HOME");
+        log.info("Value --> {}", value);
+    }
 
 
     @Test
